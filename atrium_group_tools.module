@@ -1,0 +1,52 @@
+<?php
+
+include_once('atrium_group_tools.features.inc');
+
+/*
+ * Implementation of hook_action_info()
+ */
+function atrium_group_tools_action_info() {
+  $actions = array(
+    'atrium_group_tools_set_group_action' => array(
+      'type' => 'node',
+      'description' => t('Change group membership'),
+      'behavior' => array('changes_node_property'), // For Views Bulk Operation module
+      'configurable' => TRUE,
+      'hooks' => array(
+        'nodeapi' => array('insert', 'update'),
+      ),
+    ),
+  );
+  return $actions;
+}
+
+/**
+ * Action to remove all groups from a post and add a single one instead.
+ */
+function atrium_group_tools_set_group_action($node, $context) {
+  $context['groups'] = array($context['groups']);
+  $diff = array_diff($context['groups'], $node->og_groups);
+  if (!empty($diff)) {
+    og_remove_groups_action($node, $context);
+    og_add_group_action($node, $context);
+  }
+}
+
+/**
+ * Configuration form for Set Group action.
+ */
+function atrium_group_tools_set_group_action_form($context) {
+  $form = og_add_group_action_form($context);
+  $form['groups']['#multiple'] = FALSE;
+  $form['groups']['#description'] = t('Select the new group of the node');
+  return $form;
+}
+
+function atrium_group_tools_set_group_action_submit($form, &$form_state) {
+  $submit = og_add_group_action_submit($form, &$form_state);
+  if (!is_array($submit['groups'])) {
+    $submit['groups'] == array($submit['groups']);
+  }
+  return $submit;
+}
+?>

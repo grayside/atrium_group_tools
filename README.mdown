@@ -1,0 +1,29 @@
+## Atrium Group Tools
+
+This module provides tools to facilitate administering content in an Open 
+Atrium-based environment. It is specifically geared toward wrangling the 
+group-related challenges in managing nodes.
+
+### Current Functionality
+
+At `/admin/content/node/group` you will find a Bulk Operations View that 
+allows you to select nodes and change their group affiliation. This does not 
+do the following:
+
+1. It *does NOT* update the privacy/access settings of that post to match the group.
+2. It *does NOT* move entire Notebook books or Case Tracker projects.
+3. It *does NOT* modify existing user subscriptions to content.
+4. It *does NOT* update any settings of the node inherited from the group, such as language settings.
+
+All it does is move a node from one group to another.
+
+These are all problems that could potentially be fixed by enhancing the code that handles group 
+reassignment in `atrium_group_tools.module` and by tweaking or adding additional views to help 
+the selection of groups of content.
+
+For example, the reassignment of nodes between groups could also look up the group Space 
+settings to find what privacy setting should be imposed on the node. An alternate Bulk View 
+could be created that allows you to select a Project or Book, and have new actions that seek out 
+all content related to those nodes.
+
+I have no current plans to enhance this module beyond what you currently see.
